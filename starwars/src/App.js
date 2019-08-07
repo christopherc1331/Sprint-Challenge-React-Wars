@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import styled from "styled-components";
 import "./App.css";
 import CharacterCard from "./components/CharacterCard.js";
 const App = () => {
@@ -11,7 +12,10 @@ const App = () => {
   // Fetch characters from the star wars api in an effect hook. Remember, anytime you have a
   // side effect in a component, you want to think about which state and/or props it should
   // sync up with, if any.
-
+  const CardContainer = styled.div`
+    display: flex;
+    flex-wrap: wrap;
+  `;
   useEffect(() => {
     const fetchData = () => {
       axios
@@ -19,7 +23,6 @@ const App = () => {
         .then(result => {
           console.log(result.data.results);
           setData(result.data.results);
-          console.log(data);
         })
         .catch(err => console.log(err));
     };
@@ -30,11 +33,11 @@ const App = () => {
   return (
     <div className="App">
       <h1 className="Header">React Wars</h1>
-      <div>
-        {/* {data.map(item => {
-          return <CharacterCard name={item.name} />;
-        })} */}
-      </div>
+      <CardContainer>
+        {data.map(item => {
+          return <CharacterCard key={item.name} item={item} />;
+        })}
+      </CardContainer>
     </div>
   );
 };
